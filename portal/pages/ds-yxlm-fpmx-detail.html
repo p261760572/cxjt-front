@@ -20,62 +20,67 @@
         <table class="table" style="width: 970px;">
             <!--caption>查询执行记录</caption-->
             <tr>
-                <td class="text-right col-sm-2">
+				<input type="text" class="hidden" name="rec_id">
+			</tr>
+            <tr>
+                <!--td class="text-right col-sm-2">
                     <label>批次号：</label>
                 </td>
                 <td class="col-sm-4">
                     <input type="text" name="batch_no">
-                </td>
+                </td-->
                 <td class="text-right col-sm-2">
-                    <label>地区：</label>
-                </td>
+                    <label>地级市</label></td>
                 <td class="col-sm-4">
-                    <input type="text" name="dq">
+                    <div class="col-sm-12" style="padding:0;">
+                        <input type="text" id="dq" name="dq" class="easyui-combobox">
+                    </div>
                 </td>
-            </tr>
-            <tr>
                	<td class="text-right col-sm-2">
-                    <label>开票时间：</label>
-                </td>
-                <td class="col-sm-4">
-                    <input type="text" name="kpsj">
-                </td>
-                <td class="text-right col-sm-2">
-                    <label>类型：</label>
-                </td>
-                <td class="col-sm-4">
-                    <input type="text" name="lx">
-                </td>
+					<label>开票日期</label></td>
+				<td class="col-sm-4">
+					<input id="kpsj" type="text" class="Wdate" name="kpsj" style="width: 120px;" onfocus="WdatePicker({dateFmt:'yyyyMMdd'})">
+				</td>
             </tr>
             <tr>
+                <td class="text-right col-sm-2">
+                    <label>发票类型：</label>
+                </td>
+                <td class="col-sm-4">
+                    <div class="col-sm-12" style="padding:0;">
+                        <input type="text" id="fplx" name="fplx" class="easyui-combobox">
+                    </div>
+                </td>
                <td class="text-right col-sm-2">
                     <label>开票名称：</label>
                 </td>
                 <td class="col-sm-4">
                     <input type="text" name="kpmc">
                 </td>
+            </tr>
+            <tr>
                 <td class="text-right col-sm-2">
                     <label>开票项目：</label>
                 </td>
                 <td class="col-sm-4">
-                    <input type="text" name="kpxm">
+                    <div class="col-sm-12" style="padding:0;">
+                        <input type="text" id="kpxm" name="kpxm" class="easyui-combobox">
+                    </div>
                 </td>
-            </tr>
-            <tr>
                <td class="text-right col-sm-2">
                     <label>备注：</label>
                 </td>
                 <td class="col-sm-4">
                     <input type="text" name="bz">
                 </td>
-                <td class="text-right col-sm-2">
+                <!--td class="text-right col-sm-2">
                     <label>商户号：</label>
                 </td>
                 <td class="col-sm-4">
                     <input type="text" name="shh">
-                </td>
+                </td-->
             </tr>
-            <tr>
+            <!--tr>
                <td class="text-right col-sm-2">
                     <label>终端号：</label>
                 </td>
@@ -88,8 +93,8 @@
                 <td class="col-sm-4">
                     <input type="text" name="posts">
                 </td>
-            </tr>
-            <tr>
+            </tr-->
+            <!--tr>
                <td class="text-right col-sm-2">
                     <label>使用月数：</label>
                 </td>
@@ -102,28 +107,27 @@
                 <td class="col-sm-4">
                     <input type="text" name="sfbz">
                 </td>
-            </tr>
+            </tr-->
             <tr>
-               <td class="text-right col-sm-2">
+                <td class="text-right col-sm-2">
                     <label>收费总金额：</label>
                 </td>
                 <td class="col-sm-4">
-                    <input type="text" name="sfjz">
+                    <input type="text" name="sfzj">
                 </td>
                 <td class="text-right col-sm-2">
-                    <label>收费开始日期：</label>
-                </td>
-                <td class="col-sm-4">
-                    <input type="text" name="sfksrq">
-                </td>
+					<label>收费开始日期</label></td>
+				<td class="col-sm-4">
+					<input id="sfksrq" type="text" class="Wdate" name="sfksrq" style="width: 120px;" onfocus="WdatePicker({dateFmt:'yyyyMMdd'})">
+				</td>
             </tr>
             <tr>
                <td class="text-right col-sm-2">
                     <label>收费结束日期：</label>
                 </td>
                 <td class="col-sm-4">
-                    <input type="text" name="sfjsrq">
-                </td>
+					<input id="sfjsrq" type="text" class="Wdate" name="sfjsrq" style="width: 120px;" onfocus="WdatePicker({dateFmt:'yyyyMMdd'})">
+				</td>
                 <td class="text-right col-sm-2">
                     <label>票据号：</label>
                 </td>
@@ -146,34 +150,26 @@
                 </td>
             </tr>
             <tr>
-               <td class="text-right col-sm-2">
+               <!--td class="text-right col-sm-2">
                     <label>寄件地址：</label>
                 </td>
                 <td class="col-sm-4">
                     <input type="text" name="jjdz">
-                </td>
+                </td-->
                 <td class="text-right col-sm-2">
                     <label>创建人：</label>
                 </td>
                 <td class="col-sm-4">
                     <input type="text" name="created_by">
                 </td>
-            </tr>
-            <tr>
-               <td class="text-right col-sm-2">
+                <td class="text-right col-sm-2">
                     <label>创建时间：</label>
                 </td>
                 <td class="col-sm-4">
                     <input type="text" name="created_time">
                 </td>
-                <td class="text-right col-sm-2">
-                    <label>审核人：</label>
-                </td>
-                <td class="col-sm-4">
-                    <input type="text" name="checked_by">
-                </td>
             </tr>
-            <tr>
+            <!--tr>
                <td class="text-right col-sm-2">
                     <label>审核时间：</label>
                 </td>
@@ -186,33 +182,26 @@
                 <td class="col-sm-4">
                     <input type="text" name="checked_by">
                 </td>
-            </tr>
-            <tfoot>
-            <!--tr>
-                <td></td>
-                <td colspan="3">
-                    <button type="button" class="btn btn-primary"
-                            data-options="datagrid:'#dg',url:'/action/bm/lc-exec-his/search'"
-                            onclick="$$.search(this)">查询
-                    </button>
-                    <button type="button" class="btn btn-default btn-outline" onclick="$$.reset(this)">重置</button>
-                </td>
             </tr-->
-            </tfoot>
+            
+            <tfoot>
+				<tr>
+					<td></td>
+					<td colspan="3" align="center">
+						<button type="button" class="btn btn-primary tf tf-create" onclick="$$.submit(this)"
+								data-options="url:'/action/bm/ds-yxlm-fpmx/create'">
+							新增提交
+						</button>
+						<button type="button" class="btn btn-primary tf tf-update" onclick="$$.submit(this)"
+								data-options="url:'/action/bm/ds-yxlm-fpmx/update'">
+							编辑提交
+						</button>
+						<button type="button" class="btn btn-default btn-outline" onclick="$$.close()">关闭</button>
+					</td>
+				</tr>
+			</tfoot>
         </table>
     </form>
-    
-    <br>
-    <div style="width: 1000px;">
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-2"></div>
-            <div class="col-sm-6">
-                <button type="button" class="btn btn-default btn-outline" onclick="$$.close()">关闭</button>
-            </div>
-        </div>
-    </div>
-
 </div>
     
 </div>
@@ -231,7 +220,20 @@
 
     $(function () {
 		$$.loadForm('#ff', '/action/bm/ds-yxlm-fpmx/view', query);
+		$$.transform('#ff', operateType, {});
 		
+		$$.request('/action/bm/parameter/list', {'dq': '1'}, function (data) {
+            $('#dq').combobox('loadData', data.dq);
+        });
+		
+		$$.request('/action/bm/parameter/list', {'fplx': '1'}, function (data) {
+            $('#fplx').combobox('loadData', data.fplx);
+        });
+		
+		$$.request('/action/bm/parameter/list', {'kpxm': '1'}, function (data) {
+            $('#kpxm').combobox('loadData', data.kpxm);
+        });
+	});
 </script>
 </body>
 

@@ -44,6 +44,24 @@
 						<input id="lkrq1" type="text" class="Wdate" name="lkrq" style="width: 120px;" onfocus="WdatePicker({onpicked:function(){$dp.$('#lkrq2').focus();},maxDate:'#F{$dp.$D(\'lkrq2\')}',dateFmt:'yyyyMMdd'})">
 						<input id="lkrq2" type="text" class="Wdate" name="lkrq2" style="width: 120px;" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'lkrq1\')}',dateFmt:'yyyyMMdd'})">
 					</td>
+					<td class="text-right col-sm-2">
+						<label>是否开票：</label>
+					</td>
+					<td class="col-sm-4">
+						<div class="col-sm-12" style="padding:0;">
+							<input type="text" id="sfkp" name="sfkp" class="easyui-combobox" data-options="panelHeight:'auto'">
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="text-right col-sm-2">
+						<label>开票状态：</label>
+					</td>
+					<td class="col-sm-4">
+						<div class="col-sm-12" style="padding:0;">
+							<input type="text" id="kpzt" name="kpzt" class="easyui-combobox" data-options="panelHeight:'auto'">
+						</div>
+					</td>
 				</tr>
 				<tfoot>
 				<tr>
@@ -68,7 +86,7 @@
 			<a href="#" class="easyui-linkbutton" onclick="onClickOpenDlg(this, 'create')" data-options="iconCls:'fa fa-bars',plain:true">新增</a>
 			<a href="#" class="easyui-linkbutton" onclick="onClickOpenDlg(this, 'update')" data-options="iconCls:'fa fa-bars',plain:true">编辑</a>
 		</div>
-		<table id="dg" class="easyui-datagrid" title="查询记录" data-options="singleSelect:true,pagination:true,rownumbers:true,toolbar:'#tb',idField:'rec_id'">
+		<table id="dg" class="easyui-datagrid" title="查询记录" data-options="singleSelect:true,pagination:true,onClickRow:onClickrow,rownumbers:true,toolbar:'#tb',idField:'rec_id'">
 			<thead>
 			<tr>
 				<th data-options="field:'kprq'">开票日期</th>
@@ -76,14 +94,31 @@
 				<th data-options="field:'lkje'">来款金额</th>
 				<th data-options="field:'sffmc'">收/付方名称</th>
 				<th data-options="field:'dq'">地市</th>
-				<th data-options="field:'bank'">银行</th>
+				<th data-options="field:'bank_nm'">银行</th>
 				<th data-options="field:'zjc'">资金池</th>
 				<th data-options="field:'csr'">纯收入</th>
 				<th data-options="field:'ss'">税收</th>
 				<th data-options="field:'qt'">其他</th>
 				<th data-options="field:'hkje'">划款金额</th>
 				<th data-options="field:'zjcbm'">资金池编码</th>
+				<th data-options="field:'op',formatter:formatOp">操作</th>
+			</tr>
+			</thead>
+		</table>
+		<br>
+		<table id="dg2" class="easyui-datagrid" title="绑定发票记录" data-options="singleSelect:true,pagination:true,idField:'rec_id'">
+			<thead>
+			<tr>
+				<th data-options="field:'kpsj'">开票时间</th>
+				<th data-options="field:'fplx_nm'">类型</th>
+				<th data-options="field:'kpmc'">开票名称</th>
+				<th data-options="field:'kpxm_nm'">开票项目</th>
+				<th data-options="field:'bz'">备注</th>
+				<th data-options="field:'sfzj'">收费总金额</th>
+				<th data-options="field:'sfksrq'">收费开始日期</th>
+				<th data-options="field:'sfjsrq'">收费结束日期</th>
 				<th data-options="field:'pjh'">票据号</th>
+				<th data-options="field:'op',formatter:formatOp2">操作</th>
 			</tr>
 			</thead>
 		</table>
@@ -113,14 +148,14 @@
 							<label>地市</label></td>
 						<td class="col-sm-4">
 							<div class="col-sm-12" style="padding:0;">
-								<input type="text" id="ddq" name="dq" class="easyui-combobox">
+								<input type="text" id="dq2" name="dq" class="easyui-combobox">
 							</div>
 						</td>
 						<td class="text-right col-sm-2">
 							<label>活动银行</label></td>
 						<td class="col-sm-4">
 							<div class="col-sm-12" style="padding:0;">
-								<input type="text" id="dbank" name="bank" class="easyui-combobox">
+								<input type="text" id="bank2" name="bank" class="easyui-combobox">
 							</div>
 						</td>
 					</tr>
@@ -179,9 +214,12 @@
 							<input type="text" name="zjcbm">
 						</td>
 						<td class="text-right col-sm-2">
-							<label>票据号</label></td>
-						<td class="col-sm-4 tf tf-create tf-update">
-							<input type="text" name="pjh">
+							<label>是否开票：</label>
+						</td>
+						<td class="col-sm-4">
+							<div class="col-sm-12" style="padding:0;">
+								<input type="text" id="sfkp2" name="sfkp" class="easyui-combobox" data-options="panelHeight:'auto'">
+							</div>
 						</td>
 					</tr>
 					<tr class="tf">
@@ -218,6 +256,66 @@
 		</form>
 	</div>
 
+	<div id="dd3" class="easyui-dialog dlg" title="发票信息" style="width:860px;height:460px;" data-options="resizable:true,modal:true,closed:true">
+		<form id="ff3" data-options="onSerialize:$.noop">
+			<table class="table" style="width: 800px;">
+				<tbody>
+					<tr>
+						<input type="text" class="hidden" name="tz_id">
+					</tr>
+					<tr class="tf tf-create tf-update">
+						<td class="text-right col-sm-2">
+							<label>开票日期</label></td>
+						<td class="col-sm-4">
+							<input id="kprq" type="text" class="Wdate" name="kprq" style="width: 120px;" onfocus="WdatePicker({dateFmt:'yyyyMMdd'})">
+						</td>
+						<td class="text-right col-sm-2">
+							<label>地市</label></td>
+						<td class="col-sm-4">
+							<div class="col-sm-12" style="padding:0;">
+								<input type="text" id="dq3" name="dq" class="easyui-combobox">
+							</div>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td></td>
+						<td></td>
+						<td colspan="3">
+							<button type="button" class="btn btn-primary" onclick="$$.search(this)"
+									data-options="datagrid:'#dg3',url:'/action/bm/ds-yxlm-fpmx/search'">
+								查询
+							</button>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</form>
+		<div id="tb3">
+			<a href="#" class="easyui-linkbutton" data-options="iconCls:'fa fa-bars',plain:true" onclick="onClickBatchBinding()">批量绑定</a>
+		</div>
+		<table id="dg3" class="easyui-datagrid" style="width:800px;height:280px" title="查询结果"
+			   data-options="singleSelect:true,pagination:true,pageSize:5,pageList:[5],idField:'rec_id',toolbar:'#tb3'">
+			<thead>
+			<tr>
+				<th data-options="field:'chk',checkbox:true"></th>
+				<!--th data-options="field:'batch_no',width:80">批次号</th-->
+				<th data-options="field:'dq'">地区</th>
+				<th data-options="field:'kpsj'">开票时间</th>
+				<th data-options="field:'fplx_nm'">类型</th>
+				<th data-options="field:'kpmc'">开票名称</th>
+				<th data-options="field:'kpxm_nm'">开票项目</th>
+				<th data-options="field:'bz'">备注</th>
+				<th data-options="field:'sfzj'">收费总金额</th>
+				<th data-options="field:'sfksrq'">收费开始日期</th>
+				<th data-options="field:'sfjsrq'">收费结束日期</th>
+				<th data-options="field:'pjh'">票据号</th>
+				<th data-options="field:'op',formatter:formatOp3">操作</th>
+			</tr>
+			</thead>
+		</table>
+	</div>
 <script src="../lib/jquery/jquery.min.js"></script>
 <script src="../lib/layer/layer.js"></script>
 <script src="../lib/My97DatePicker/WdatePicker.js"></script>
@@ -231,12 +329,54 @@
 
     function reload() {
         $('#dg').datagrid('reload');
+		$('#dg2').datagrid('reload');
     }
 
 	function onSubmit() {
 		$$.msg('操作成功');
 		$('#dd').dialog('close');
 		reload();
+	}
+	
+	function onClickrow(index, row) {
+		var params = {tz_id: row.rec_id};
+		$('#dg2').datagrid({
+            url: $$.wrapUrl('/action/bm/yxlm-fpbd/search'),
+            pageNumber: 1,
+            queryParams: params,
+            onLoadSuccess: function (data) {
+                $(this).datagrid('clearChecked');
+                //解决滚动条引起的panel宽度问题
+                $(this).datagrid('getPanel').panel('resize');
+            }
+        });
+	}
+	
+	function onClickBatchBinding() {
+		var tz_id = $('#dd3').find('input[name="tz_id"]').val();
+		var rows = $('#dg3').datagrid('getChecked');
+		
+		if (rows.length) {
+            var keyRows = [];
+			for (var i = 0; i < rows.length; i++) {
+				keyRows.push({
+					tz_id: tz_id, 
+					fp_id: rows[i].rec_id
+				});
+			}
+
+			var data = {rows: keyRows};
+			$$.confirm('确认绑定选中的发票？', function () {
+				$$.request('/action/bm/yxlm-fpbd/batch-create', data, function (result) {
+					$$.msg('操作成功');
+					$('#dg2').datagrid('reload');
+                	$('#dg3').datagrid('reload');
+				});
+			});
+        } else {
+            $$.msg('请勾选记录！');
+            return false;
+        }
 	}
 	
 	function onClickOpenDlg(target, type){
@@ -246,9 +386,56 @@
             return false;
         } 
 		$('#dd').dialog('open');
+		if (type != 'create') {
+			$$.loadForm('#ff2', '/action/bm/yxlm-xxy/view', row);
+		}
+		$$.transform('#dd', type, {});
+	}
+	
+	function formatOp(value, row, index) {
+		return '<a href="javascript:void(0)" onclick="OpenBindingReceipt('+ row.rec_id+')">绑定发票</a>';
+    }
+	
+	function formatOp2(value, row, index) {
+		return '<a href="javascript:void(0)" onclick="RemoveReceipt('+ row.rec_id+')">删除</a>';
+    }
+	
+	function formatOp3(value, row, index) {
+		var tz_id = $('#dd3').find('input[name="tz_id"]').val();
+		return '<a href="javascript:void(0)" onclick="SingleBindingReceipt('+ tz_id + ',' + row.rec_id+')">绑定</a>';
+    }
+	
+	function OpenBindingReceipt(tz_id) {
+		$('#dd3').dialog('open');
+		$('#dd3').find('input[name="tz_id"]').val(tz_id);
 		
-		$$.loadForm('#ff2', '/action/bm/yxlm-xxy/view', row);
-		$$.transform('.dlg', type, {});
+		$('#dg3').datagrid('clearSelections').datagrid({
+			url: $$.wrapUrl('/action/bm/ds-yxlm-fpmx/search'),
+			pageNumber: 1,
+			queryParams: {tz_id: tz_id},
+			onLoadSuccess: function (data) {
+				$('#dg3').datagrid('clearChecked');
+				//解决滚动条引起的panel宽度问题
+				$('#dg3').datagrid('getPanel').panel('resize');
+			},
+			onLoadError: function (data) {
+				$$.msg(data.errmsg);
+			}
+		});
+	}
+	
+	function RemoveReceipt(bd_id) {
+		$$.request('/action/bm/yxlm-fpbd/remove', {'rec_id': bd_id}, function (data) {
+            $('#dg2').datagrid('reload');
+        });
+	}
+	
+	function SingleBindingReceipt(tz_id, fp_id) {
+		var params = {'tz_id': tz_id, 'fp_id': fp_id};
+		$$.request('/action/bm/yxlm-fpbd/create', params, function (data) {
+			$('#dg2').datagrid('reload');
+            $('#dg3').datagrid('reload');
+        });
 	}
 	
     $(function () {
@@ -260,12 +447,22 @@
 		$('#ff').find('button.btn-primary').click();
 		$$.request('/action/bm/parameter/list', {'bank': '1'}, function (data) {
             $('#bank').combobox('loadData', data.bank);
-			$('#dbank').combobox('loadData', data.bank);
+			$('#bank2').combobox('loadData', data.bank);
         });
 		
 		$$.request('/action/bm/parameter/list', {'dq': '1'}, function (data) {
             $('#dq').combobox('loadData', data.dq);
-			$('#ddq').combobox('loadData', data.dq);
+			$('#dq2').combobox('loadData', data.dq);
+			$('#dq3').combobox('loadData', data.dq);
+        });
+		
+		$$.request('/action/bm/parameter/list', {'sfkp': '1'}, function (data) {
+            $('#sfkp').combobox('loadData', data.sfkp);
+			$('#sfkp2').combobox('loadData', data.sfkp);
+        });
+		
+		$$.request('/action/bm/parameter/list', {'kpzt': '1'}, function (data) {
+            $('#kpzt').combobox('loadData', data.kpzt);
         });
     });
 </script>
