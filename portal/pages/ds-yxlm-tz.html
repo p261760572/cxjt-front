@@ -29,26 +29,30 @@
                     </div>
                 </td>
                 <td class="text-right col-sm-2">
-                    <label>拓展人</label></td>
+                    <label>合作方</label></td>
                 <td class="col-sm-4">
-                    <div class="col-sm-12" style="padding:0;">
-                        <input type="text" id="tzr" name="tzr" class="easyui-combobox" data-options="valueField: 'tzr',textField: 'tzr'">
-                    </div>
-                </td>
+					<input type="text" name="yxlm_hzf" class="easyui-validatebox" data-options="">
+				</td>
             </tr>
 
             <tr>
-            	<td class="text-right col-sm-2">
-                    <label>业务类型</label></td>
+				<td class="text-right col-sm-2">
+					<label>统计日期：</label>
+				</td>
+				<td class="col-sm-4">
+					<input id="tjrq1" type="text" class="Wdate" name="tjrq" style="width: 120px;" onfocus="WdatePicker({onpicked:function(){$dp.$('#tjrq2').focus();},maxDate:'#F{$dp.$D(\'lkrq2\')}',dateFmt:'yyyyMMdd'})">
+					<input id="tjrq2" type="text" class="Wdate" name="tjrq2" style="width: 120px;" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'tjrq1\')}',dateFmt:'yyyyMMdd'})">
+				</td>
+           		<td class="text-right col-sm-2">
+                    <label>协议状态</label></td>
                 <td class="col-sm-4">
-                    <div class="col-sm-12" style="padding:0;">
-                        <input type="text" id="ywlx" name="ywlx" class="easyui-combobox" data-options="panelHeight:'auto'">
-                    </div>
-                </td>
+					<div class="col-sm-12" style="padding:0;">
+						<input type="text" id="xyzt" name="xyzt" class="easyui-combobox">
+					</div>
+				</td>
             </tr>
 
             </tbody>
-
             <tfoot>
             <tr>
                 <td></td>
@@ -58,6 +62,10 @@
                             data-options="datagrid:'#dg',url:'/action/bm/ds-yxlm-tz/search'">
                         查询
                     </button>
+                    <button type="button" class="btn btn-success" onclick="$$.exportData(this)"
+                            data-options="datagrid:'#dg',url:'/action/bm/ds-yxlm-tz/export'">
+                        导出
+                    </button>
                     <button type="button" class="btn btn-default btn-outline" onclick="$$.reset(this)">重置</button>
                 </td>
             </tr>
@@ -65,25 +73,29 @@
         </table>
     </form>
     <div id="tb">
+        <a href="#" class="easyui-linkbutton" data-toggle="create" data-options="iconCls:'fa fa-bars',plain:true">新增</a>
+        <a href="#" class="easyui-linkbutton" data-toggle="update" data-options="iconCls:'fa fa-bars',plain:true">修改</a>
         <a href="#" class="easyui-linkbutton" data-toggle="view" data-options="iconCls:'fa fa-bars',plain:true">查看详情</a>
     </div>
     <table id="dg" class="easyui-datagrid" title="查询结果"
            data-options="singleSelect:true,pagination:true,rownumbers:true,idField:'rec_id',toolbar:'#tb'">
         <thead>
         <tr>
-            <th data-options="field:'chk',checkbox:true"></th>
+            <!--th data-options="field:'chk',checkbox:true"></th-->
             <!--th data-options="field:'batch_no',width:80">批次号</th-->
-            <th data-options="field:'zwsj'">账务时间</th>
-            <th data-options="field:'lx'">类型</th>
-            <th data-options="field:'kpmc'">开票名称</th>
-            <th data-options="field:'kpxm'">开票项目</th>
-            <th data-options="field:'je'">金额</th>
-            <th data-options="field:'bz'">备注</th>
-            <th data-options="field:'sjyt'">实际用途</th>
-            <th data-options="field:'sfbz'">收费标准</th>
-            <th data-options="field:'kpph'">开票票号</th>
-            <th data-options="field:'kpsj'">开票日期</th>
-            <th data-options="field:'dzsj'">到账时间</th>
+            <th data-options="field:'tjrq'">统计日期</th>
+            <th data-options="field:'dq_nm'">地级市</th>
+            <th data-options="field:'yxlm_hzf'">合作方</th>
+            <th data-options="field:'hdmc'">活动名称</th>
+            <th data-options="field:'xyzt_nm'">协议状态</th>
+            <th data-options="field:'sffmc'">收/付方名称</th>
+            <th data-options="field:'lkzj'">来款总计</th>
+            <th data-options="field:'qkzj'">去款总计</th>
+            <th data-options="field:'ywjc'">业务进程</th>
+            <th data-options="field:'pwjc'">票务进程</th>
+            <th data-options="field:'zjcbm'">资金池编码</th>
+            <th data-options="field:'hpkm'">回票科目</th>
+            <th data-options="field:'hpje'">回票金额</th>
             <th data-options="field:'created_by'">创建人</th>
             <th data-options="field:'created_time'">创建时间</th>
         </tr>
@@ -119,12 +131,25 @@
 	var toggleOptions = {
         options: {
 			view: {
-				url: 'ds-yxlm-fpmx-detail.html'
+				url: 'ds-yxlm-tz-detail.html'
+			},
+			create: {
+				url: 'ds-yxlm-tz-detail.html',
+				selected: false
+			},
+			update: {
+				url: 'ds-yxlm-tz-detail.html'
 			}
         },
         params: {
 			view: {
-				
+				operateType: 'view'
+			},
+			create: {
+				operateType: 'create'
+			},
+			update: {
+				operateType: 'update'
 			}
 		}
     };
@@ -142,10 +167,14 @@
         });
 		
         $('#ff').find('button.btn-primary').click();
-
+		
         $$.request('/action/bm/parameter/list', {'dq': '1'}, function (data) {
             $('#dq').combobox('loadData', data.dq);
         });
+		
+		$$.request('/action/bm/parameter/list', {'xyzt': '1'}, function (data) {
+            $('#xyzt').combobox('loadData', data.xyzt);
+		});
 		
     });
 </script>
