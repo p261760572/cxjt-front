@@ -444,7 +444,9 @@
 			
         });
 		
-		$$.loadForm('#ff', '/action/bm/yxlm-tz/view', query);
+		if(operateType != 'create') {
+			$$.loadForm('#ff', '/action/bm/yxlm-tz/view', query);
+		}
 		
 		$$.request('/action/bm/parameter/list', {'dq': '1'}, function (data) {
             $('#dq').combobox('loadData', data.dq);
