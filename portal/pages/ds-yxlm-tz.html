@@ -79,26 +79,63 @@
     </div>
     <table id="dg" class="easyui-datagrid" title="查询结果"
            data-options="singleSelect:true,pagination:true,rownumbers:true,idField:'rec_id',toolbar:'#tb'">
+        <!--thead data-options="frozen:true">
+			<tr>
+				
+			</tr>
+        </thead-->
         <thead>
-        <tr>
-            <!--th data-options="field:'chk',checkbox:true"></th-->
-            <!--th data-options="field:'batch_no',width:80">批次号</th-->
-            <th data-options="field:'tjrq'">统计日期</th>
-            <th data-options="field:'dq_nm'">地级市</th>
-            <th data-options="field:'yxlm_hzf'">合作方</th>
-            <th data-options="field:'hdmc'">活动名称</th>
-            <th data-options="field:'xyzt_nm'">协议状态</th>
-            <th data-options="field:'sffmc'">收/付方名称</th>
-            <th data-options="field:'lkzj'">来款总计</th>
-            <th data-options="field:'qkzj'">去款总计</th>
-            <th data-options="field:'ywjc'">业务进程</th>
-            <th data-options="field:'pwjc'">票务进程</th>
-            <th data-options="field:'zjcbm'">资金池编码</th>
-            <th data-options="field:'hpkm'">回票科目</th>
-            <th data-options="field:'hpje'">回票金额</th>
-            <th data-options="field:'created_by'">创建人</th>
-            <th data-options="field:'created_time'">创建时间</th>
-        </tr>
+			<tr>
+				<th rowspan="2" data-options="field:'tjrq'">统计日期</th>
+				<th rowspan="2" data-options="field:'dq_nm'">地级市</th>
+				<th rowspan="2" data-options="field:'yxlm_hzf',width:90">合作方</th>
+				<th rowspan="2" data-options="field:'xy'">协议</th>
+				<th rowspan="2" data-options="field:'hdmc',width:120">活动名称</th>
+				<th rowspan="2" data-options="field:'xyzt_nm'">协议状态</th>
+				<th data-options="width:140">来款+垫款</th>
+				<th data-options="" colspan="5">来款</th>
+				<th data-options="field:'dk'" rowspan="2">垫款</th>
+				<th data-options="" colspan="11">去款</th>
+				<th data-options="field:'ywjc'" rowspan="2">业务进程</th>
+				<th data-options="" colspan="6">收入明细</th>
+				<th data-options="" colspan="4">票务情况</th>
+				<th data-options="field:'zjcbm',width:180" rowspan="2" >资金池编码</th>
+				<th data-options="field:'created_by'" rowspan="2">创建人</th>
+				<th data-options="field:'created_time'" rowspan="2">创建时间</th>
+			</tr>
+			<tr>
+				<th data-options="field:'dzlk'">合计</th>
+				
+				<th data-options="field:'lkxj'">小计</th>
+				<th data-options="field:'sffmc'">收/付方名称</th>
+				<th data-options="field:'sffkhh'">收/付方开户行</th>
+				<th data-options="field:'yhlk'">银行来款</th>
+				<th data-options="field:'qtlk'">其他</th>
+				
+				<th data-options="field:'qkzj'">小计</th>
+				<th data-options="field:'ghdk'">归还垫款</th>
+				<th data-options="field:'zjc'">资金池</th>
+				<th data-options="field:'sr'">收入</th>
+				<th data-options="field:'tyhyfk'">退银行预付款</th>
+				<th data-options="field:'fsh'">付商户</th>
+				<th data-options="field:'fhfgs'">返回分公司</th>
+				<th data-options="field:'ghkhjldk'">归还客户经理垫款</th>
+				<th data-options="field:'fgggsxc'">付广告公司宣传</th>
+				<th data-options="field:'fdxxc'">付短信宣传</th>
+				<th data-options="field:'qtzc'">其他</th>
+				
+				<th data-options="field:'fwf'">服务费</th>
+				<th data-options="field:'yxfwf'">营销服务费</th>
+				<th data-options="field:'xtkff'">系统开发费</th>
+				<th data-options="field:'lmzdzlf'">联盟终端租赁费</th>
+				<th data-options="field:'qtfwf'">其他服务费</th>
+				<th data-options="field:'jjsy'">间接收益</th>
+				
+				<th data-options="field:'ykpk'">应开票款</th>
+				<th data-options="field:'skpk'">实开票款</th>
+				<th data-options="field:'pjh',width:120">票据号</th>
+				<th data-options="field:'pwjc'">票务进程</th>
+			</tr>
         </thead>
     </table>
 </div>
