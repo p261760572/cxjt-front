@@ -76,13 +76,17 @@
                     </div>
                 </td>
             </tr>
-            <td class="text-right col-sm-2">
-                    <label>活动备注：</label>
-                </td>
-                <td class="col-sm-4">
-                    <input type="text" name="hdbz">
-                </td>
-            </td>
+            <tr class="tf tf-create tf-update">
+				<td class="text-right col-sm-2">
+						<label>活动备注：</label>
+					</td>
+					<td class="col-sm-4">
+						<input type="text" name="hdbz">
+					</td>
+				</td>
+       			<td>
+       			</td>
+       		</tr>
         </table>
         <table class="table" style="width: 970px;">
             <caption>来款明细</caption>
@@ -105,7 +109,7 @@
                     <label>银行来款：</label>
                 </td>
                 <td class="col-sm-4">
-					<input type="number" name="yhlk">
+					<input type="number" name="yhlk" value=0>
 				</td>
                 <td class="text-right col-sm-2">
                     <label>其他来款：</label>
@@ -147,66 +151,69 @@
             </tr>
             <tr class="tf tf-create tf-update">
                 <td class="text-right col-sm-2">
-                    <label>收入：</label>
-                </td>
-                <td class="col-sm-4">
-                    <input type="number" name="sr" value=0>
-                </td>
-                <td class="text-right col-sm-2">
                     <label>退银行预付款：</label>
                 </td>
                 <td class="col-sm-4">
                     <input type="number" name="tyhyfk" value=0>
                 </td>
-            </tr>
-            <tr class="tf tf-create tf-update">
+            
                 <td class="text-right col-sm-2">
                     <label>付商户：</label>
                 </td>
                 <td class="col-sm-4">
                     <input type="number" name="fsh" value=0>
                 </td>
+            </tr>
+            <tr class="tf tf-create tf-update">
                 <td class="text-right col-sm-2">
                     <label>返回分公司：</label>
                 </td>
                 <td class="col-sm-4">
                     <input type="number" name="fhfgs" value=0>
                 </td>
-            </tr>
-            <tr class="tf tf-create tf-update">
                 <td class="text-right col-sm-2">
                     <label>归还客户经理垫款：</label>
                 </td>
                 <td class="col-sm-4">
                     <input type="number" name="ghkhjldk" value=0>
                 </td>
+            </tr>
+            <tr class="tf tf-create tf-update">
                 <td class="text-right col-sm-2">
                     <label>付广告公司宣传：</label>
                 </td>
                 <td class="col-sm-4">
                     <input type="number" name="fgggsxc" value=0>
                 </td>
-            </tr>
-            <tr class="tf tf-create tf-update">
                 <td class="text-right col-sm-2">
                     <label>付短信宣传：</label>
                 </td>
                 <td class="col-sm-4">
                     <input type="number" name="fdxxc" value=0>
                 </td>
+            </tr>
+            <tr class="tf tf-create tf-update">
                 <td class="text-right col-sm-2">
                     <label>其他支出：</label>
                 </td>
                 <td class="col-sm-4">
                     <input type="number" name="qtzc" value=0>
                 </td>
-            </tr>
-            <tr class="tf tf-create tf-update">
                 <td class="text-right col-sm-2">
                     <label>去款备注：</label>
                 </td>
                 <td class="col-sm-4">
                     <input type="text" name="qkbz">
+                </td>
+            </tr>
+            <tr class="tf">
+                <td class="text-right col-sm-2">
+                    <label>收入：</label>
+                </td>
+                <td class="col-sm-4">
+                    <input type="number" name="sr">
+                </td>
+                <td>
                 </td>
             </tr>
          </table>
