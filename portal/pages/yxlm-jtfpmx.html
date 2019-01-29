@@ -17,12 +17,14 @@
 
 <body>
 <div class="page">
-    <form id="ff" data-options="onSerialize:onSerialize">
+    <form id="ff" data-options="onSerialize:onSerialize,onLoad:LoadForm">
         <table class="table" style="width: 970px;">
             <caption>计提详情</caption>
             <tr>
-				<input type="text" class="hidden" name="rec_id">
-				<input type="text" class="hidden" name="sfkfp" id="sfkfp">
+            	<td>
+					<input type="text" class="hidden" name="rec_id">
+					<input type="text" class="hidden" name="sfkfp" id="sfkfp">
+				</td>
 			</tr>
             <tr class="tf">
                 <td class="text-right col-sm-2">
@@ -54,10 +56,11 @@
             </tr>
         </table>
         
-        <table class="table" style="width: 970px;">
+        <table class="table" style="width: 980px;">
             <tbody>
 				<tr>
-					<a href="javascript:void(0)" class="easyui-linkbutton tf" data-options="plain:true, iconCls:'icon-add'" onclick="addTemp()">增加分配</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton tf" id="add-btn" data-options="plain:true, iconCls:'icon-add'" onclick="addTemp()">增加分配 </a>
+					(可分配余额<span id="kfpsr"></span>)
 				</tr>
 				<tr>
 					<div id="container">
@@ -70,7 +73,7 @@
 				<tr>
 					<td></td>
 					<td colspan="3" align="center">
-						<button type="button" class="btn btn-primary tf tf-create" onclick="$$.submit(this)"
+						<button type="button" class="btn btn-primary" onclick="$$.submit(this)"
 								data-options="url:'/action/bm/yxlm-jtfpmx/commit'">
 							提交
 						</button>
@@ -133,7 +136,7 @@
 						'<td><input type="text" class="hidden" name="sfgz"></td>' +
                         '<td class="text-right col-sm-2">' +
 						     '<label>客户经理</label></td>' +
-						'<td class="col-sm-4">' +
+						'<td class="col-sm-2">' +
 							 '<div class="col-sm-12" style="padding:0;">' +
 							     '<input type="text" name="tzr" class="easyui-combobox" data-options="valueField:\'value\',textField:\'text\',data:tzr">' +
 							 '</div>' +
@@ -141,9 +144,15 @@
                 		'<td class="text-right col-sm-2">' +
                     	     '<label>分配收入</label>' +
                 	    '</td>' +
-                		'<td class="col-sm-4">' +
-                    	     '<input type="number" name="sr" style="width:80%"/>' +
-							 '<a class="easyui-linkbutton tf" data-options="plain:true, iconCls:\'icon-remove\'" onclick="removeTemp(this)"></a>' +
+                		'<td class="col-sm-2">' +
+                    	     '<input type="number" name="sr"/>' +
+                		'</td>' +
+						'<td class="text-right col-sm-2">' +
+                    	     '<label>分配时间</label>' +
+                	    '</td>' +
+                		'<td class="col-sm-2">' +
+                    	     '<input type="text" name="created_time" style="width:80%" readonly/>' +
+							 '<a class="easyui-linkbutton tf" style="width:18%" data-options="plain:true, iconCls:\'icon-remove\'" onclick="removeTemp(this)"></a>' +
                 		'</td>' +
             		'</tr>';
 					
@@ -169,14 +178,26 @@
 	
 	function initReadOnly() {
 		$('#container tr').each(function(i, ele) {
-			var flag = $(ele).find('[name="sfgz"]').val();
-			alert(flag);
+			var flag = $(ele).find('input[name="sfgz"]').val();
 			if(flag == '1') {
-				$ele.find('a.easyui-linkbutton.tf:not(.tf-view)').addClass('hide');
-				$ele.find('input').attr('readonly', 'readonly');
+				$(ele).find('a.easyui-linkbutton.tf:not(.tf-view)').addClass('hide');
+				$(ele).find('input').attr('readonly', 'readonly');
 			}
 			
 		});
+	}
+	
+	function LoadForm(data) {
+		$('#kfpsr').text(data.data.kfpsr);
+		$$.request('/action/bm/parameter/list', {'tzr': '1'}, function (data) {
+			$.extend(tzr, data.tzr);
+			$$.request('/action/bm/yxlm-jtfpmx/list', query, function (data) {
+				LoadTemp('#container', data.rows);
+				if($('#sfkfp').val() != '1') {
+					$('#add-btn').addClass('hide');
+				}
+			});
+        });
 	}
 	
     $(function () {
@@ -184,19 +205,7 @@
 			
         });
 		
-		if($('#sfkfp').val() != '1') {
-			$.find('a.easyui-linkbutton.tf:not(.tf-view)').addClass('hide');
-		}
-		
 		$$.loadForm('#ff', '/action/bm/yxlm-jthz/view', query);
-		
-		$$.request('/action/bm/parameter/list', {'tzr': '1'}, function (data) {
-			$.extend(tzr, data.tzr);
-			$$.request('/action/bm/yxlm-jtfpmx/list', query, function (data) {
-				LoadTemp('#container', data.rows);
-			});
-        });
-		
     });
 </script>
 </body>
