@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>全民惠计提</title>
+    <link href="../lib/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="../lib/layer/theme/default/layer.css" rel="stylesheet">
+    <link href="../lib/jquery-easyui/themes/bootstrap/easyui.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+<div class="page">
+    <form id="ff" data-options="onSerialize:$.noop">
+        <table class="table" style="width: 970px;">
+            <caption>查询全民惠计提</caption>
+            <tbody>
+            <tr>
+                <td class="text-right col-sm-2">
+                    <label>地级市</label></td>
+                <td class="col-sm-4">
+                    <div class="col-sm-12" style="padding:0;">
+                        <input type="text" id="dq" name="dq" class="easyui-combobox">
+                    </div>
+                </td>
+            
+				<td class="text-right col-sm-2">
+                    <label>计提月份</label>
+                    <!--span style="color: red;">*</span--></td>
+                <td class="col-sm-4">
+                    <input id="settle_mon" type="text" class="easyui-validatebox Wdate" name="settle_mon"
+                           style="width: 120px;"
+                           onfocus="WdatePicker({onpicked:function(){},dateFmt:'yyyyMM'})">
+                    <button type="button" class="btn btn-xs btn-danger" onclick="create_bill(this)"
+                            data-options="datagrid:'#dg',url:'/action/bm/yxlm-jthz/create'">
+                            生成计提
+                    </button>
+                </td>
+			</tr>
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td></td>
+                <td colspan="3">
+                    <button type="button" class="btn btn-primary" onclick="$$.search(this)"
+                            data-options="datagrid:'#dg',url:'/action/bm/yxlm-jthz/search'">
+                        查询
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="$$.exportData(this)"
+                            data-options="datagrid:'#dg',url:'/action/bm/yxlm-jthz/export'">
+                        导出
+                    </button>
+                    <button type="button" class="btn btn-default btn-outline" onclick="$$.reset(this)">重置</button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </form>
+    <div id="tb">
+        <!--a href="#" class="easyui-linkbutton" data-toggle="create" data-options="iconCls:'fa fa-bars',plain:true">新增</a>
+        <a href="#" class="easyui-linkbutton" data-toggle="update" data-options="iconCls:'fa fa-bars',plain:true">修改</a-->
+        <a href="#" class="easyui-linkbutton" data-toggle="view" data-options="iconCls:'fa fa-bars',plain:true,onBefore:onbefore">查看详情</a>
+    </div>
+    <table id="dg" class="easyui-datagrid" title="查询结果"
+           data-options="singleSelect:true,pagination:true,rownumbers:true,idField:'rec_id',toolbar:'#tb'">
+        <thead>
+			<tr>
+				<th data-options="field:'settle_mon',width:80">统计月份</th>
+				<th data-options="field:'dq'">地市</th>
+				<th data-options="field:'sfje'">实付金额</th>
+				<th data-options="field:'hdjybs'">活动交易笔数</th>
+				<th data-options="field:'shyjsy'">商户佣金收益</th>
+				<th data-options="field:'hbqsksdsy'">合并清算款收单收益</th>
+				<th data-options="field:'sfsy'">收费收益</th>
+				<th data-options="field:'zsr'">总收入</th>
+				<th data-options="field:'sfkfp_nm',formatter:formatjtfp">分配状态</th>
+				<th data-options="field:'sfgz_nm'">计提状态</th>
+			</tr>
+        </thead>
+    </table>
+</div>
+<script src="../lib/jquery/jquery.min.js"></script>
+<script src="../lib/layer/layer.js"></script>
+<script src="../lib/My97DatePicker/WdatePicker.js"></script>
+<script src="../lib/jquery-easyui/jquery.easyui.min.js"></script>
+<script src="../js/base.js"></script>
+<script src="../js/st.js"></script>
+<script src="../js/param.js"></script>
+<script src="../js/district.js"></script>
+<script>
+    var query = $$.parseQueryString();
+    var displayType = query.displayType;
+    var operateType = query.operateType;
+
+    function reload() {
+        $('#dg').datagrid('reload');
+    }
+
+	function onChangeCity() {
+        var value = $(this).val();
+        $$.request('/action/bm/tzr/list', {
+            dq: value
+        }, function (data) {
+            $('#tzr').combobox('loadData',data.tzr);
+        });
+    }
+	
+	function onbefore(row, params) {
+		params['settle_mon'] = row.settle_mon;
+		params['dq'] = row.dq;
+		return true;
+	}
+	
+	function formatjtfp(value, row, index) {
+		var url = 'yxlm-jtfpmx.html?rec_id='+row.rec_id;
+		/*
+		if(row.sfkfp == '1') {
+			return '<a href="javascript:void(0)" onclick="$$.open(\'yxlm-jtfpmx.html?rec_id='+row.rec_id+'\',\'全民惠分配明细\')">'+value+'</a>';
+		} else{
+			return value;
+		}*/
+		return '<a href="javascript:void(0)" onclick="$$.open(\'yxlm-jtfpmx.html?rec_id='+row.rec_id+'\',\'全民惠分配明细\')">'+value+'</a>';
+	}
+
+	function create_bill(target) {
+		var settle_mon = $('#settle_mon').val();
+		if(settle_mon == '') {
+			$$.msg('未选定月份');
+			return false;
+		}
+		
+        $$.request('/action/bm/yxlm-jthz/create', {settle_mon: settle_mon}, function (data) {
+            $$.msg('已生成');
+        }, function (data) {
+			$$.msg(data.errmsg);
+		});
+	}
+	
+	var toggleOptions = {
+        options: {
+			view: {
+				url: 'yxlm-jtmx.html'
+			},
+			create: {
+				url: 'ds-yxlm-tz-detail.html',
+				selected: false
+			},
+			update: {
+				url: 'ds-yxlm-tz-detail.html'
+			}
+        },
+        params: {
+			view: {
+				operateType: 'view'
+			},
+			create: {
+				operateType: 'create'
+			},
+			update: {
+				operateType: 'update'
+			}
+		}
+    };
+	
+    $(function () {
+        $('form').on('keyup', function (event) {
+            if (event.keyCode == 13) {
+                $(this).find('button.btn-primary').click();
+            }
+        });
+		
+		$('#tb a.easyui-linkbutton[data-toggle]').on('click', function (event) {
+            event.preventDefault();
+            $$.clickToolbar(this, toggleOptions);
+        });
+		
+        //$('#ff').find('button.btn-primary').click();
+		
+        $$.request('/action/bm/parameter/list', {'dq': '1'}, function (data) {
+            $('#dq').combobox('loadData', data.dq);
+        });
+		
+    });
+</script>
+</body>
+
+</html>

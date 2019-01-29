@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>营销联盟台账</title>
+    <title>全民惠台账</title>
     <link href="../lib/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -18,7 +18,7 @@
 <div class="page">
     <form id="ff" data-options="onSerialize:$.noop">
         <table class="table" style="width: 970px;">
-            <caption>查询营销联盟台账</caption>
+            <caption>查询全民惠台账</caption>
             <tbody>
             <tr>
                 <td class="text-right col-sm-2">
@@ -55,16 +55,20 @@
             </tbody>
             <tfoot>
             <tr>
-                <td></td>
-                <td></td>
-                <td colspan="3">
+                <td>
+                </td>
+                <td colspan="3" align="center">
                     <button type="button" class="btn btn-primary" onclick="$$.search(this)"
                             data-options="datagrid:'#dg',url:'/action/bm/ds-yxlm-tz/search'">
                         查询
                     </button>
                     <button type="button" class="btn btn-success" onclick="$$.exportData(this)"
                             data-options="datagrid:'#dg',url:'/action/bm/ds-yxlm-tz/export'">
-                        导出
+                        按合作方导出
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="$$.exportData(this)"
+                            data-options="datagrid:'#dg',url:'/action/bm/ds-yxlm-tzmx/export'">
+                        按明细汇总导出
                     </button>
                     <button type="button" class="btn btn-default btn-outline" onclick="$$.reset(this)">重置</button>
                 </td>

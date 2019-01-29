@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>全民惠分配明细</title>
+    <link href="../lib/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="../lib/layer/theme/default/layer.css" rel="stylesheet">
+    <link href="../lib/jquery-easyui/themes/bootstrap/easyui.min.css" rel="stylesheet">
+    <link href="../lib/jquery-easyui/themes/icon.css" rel="stylesheet">
+
+</head>
+
+<body>
+<div class="page">
+    <form id="ff" data-options="onSerialize:onSerialize">
+        <table class="table" style="width: 970px;">
+            <caption>计提详情</caption>
+            <tr>
+				<input type="text" class="hidden" name="rec_id">
+				<input type="text" class="hidden" name="sfkfp" id="sfkfp">
+			</tr>
+            <tr class="tf">
+                <td class="text-right col-sm-2">
+					<label>统计月份：</label>
+			    </td>
+				<td class="col-sm-4">
+					<input type="text" name="settle_mon" class="easyui-validatebox"/>
+				</td>
+                <td class="text-right col-sm-2">
+                    <label>地级市：</label>
+                </td>
+                <td class="col-sm-4">
+                    <input type="text" name="dq" class="easyui-validatebox"/>
+                </td>
+            </tr>
+            <tr class="tf">
+                <td class="text-right col-sm-2">
+                    <label>总收入：</label>
+                </td>
+                <td class="col-sm-4">
+                    <input type="text" name="zsr" class="easyui-validatebox"/>
+                </td>
+                <td class="text-right col-sm-2">
+                    <label>已分配收入：</label>
+                </td>
+                <td class="col-sm-4">
+                    <input type="text" name="yfpsr" class="easyui-validatebox"/>
+                </td>
+            </tr>
+        </table>
+        
+        <table class="table" style="width: 970px;">
+            <tbody>
+				<tr>
+					<a href="javascript:void(0)" class="easyui-linkbutton tf" data-options="plain:true, iconCls:'icon-add'" onclick="addTemp()">增加分配</a>
+				</tr>
+				<tr>
+					<div id="container">
+
+					</div>
+           		</tr>
+            </tbody>
+        	<br>
+            <tfoot>
+				<tr>
+					<td></td>
+					<td colspan="3" align="center">
+						<button type="button" class="btn btn-primary tf tf-create" onclick="$$.submit(this)"
+								data-options="url:'/action/bm/yxlm-jtfpmx/commit'">
+							提交
+						</button>
+						<button type="button" class="btn btn-default btn-outline" onclick="window.top.closeTab();">关闭</button>
+					</td>
+				</tr>
+			</tfoot>
+        </table>
+    </form>
+</div>
+<script src="../lib/jquery/jquery.min.js"></script>
+<script src="../lib/layer/layer.js"></script>
+<script src="../lib/My97DatePicker/WdatePicker.js"></script>
+<script src="../lib/jquery-easyui/jquery.easyui.min.js"></script>
+<script src="../js/base.js"></script>
+<script src="../js/st.js"></script>
+<script src="../js/param.js"></script>
+<script src="../js/district.js"></script>
+<script>
+    var query = $$.parseQueryString();
+    var displayType = query.displayType;
+    var operateType = query.operateType;
+
+	var tzr = new Array();
+    function reload() {
+        $('#dg').datagrid('reload');
+    }
+	
+	function onSerialize(data) {
+		var jtfpmx = [];
+		
+		$('#container tr').each(function(i, ele) {
+			var record = {};
+			$(ele).find('input').each(function(index, element) {
+				record[$(element).attr('name')] = $(element).val();
+			});
+			
+			delete record['undefined'];
+			jtfpmx.push(record);
+		});
+		
+		data.jtfpmx = jtfpmx;
+	}
+	
+	function onClickrow(index, row) {
+		$('#dg2').datagrid({
+            url: $$.wrapUrl('/action/bm/lc-exec-module-detail/search'),
+            pageNumber: 1,
+            queryParams: query,
+            onLoadSuccess: function (data) {
+                $(this).datagrid('clearChecked');
+                //解决滚动条引起的panel宽度问题
+                $(this).datagrid('getPanel').panel('resize');
+            }
+        });
+	}
+	
+	var template = '<tr class="tf tf-create tf-update">' +
+						'<td><input type="text" class="hidden" name="record_id"></td>' +
+						'<td><input type="text" class="hidden" name="sfgz"></td>' +
+                        '<td class="text-right col-sm-2">' +
+						     '<label>客户经理</label></td>' +
+						'<td class="col-sm-4">' +
+							 '<div class="col-sm-12" style="padding:0;">' +
+							     '<input type="text" name="tzr" class="easyui-combobox" data-options="valueField:\'value\',textField:\'text\',data:tzr">' +
+							 '</div>' +
+						'</td>' +
+                		'<td class="text-right col-sm-2">' +
+                    	     '<label>分配收入</label>' +
+                	    '</td>' +
+                		'<td class="col-sm-4">' +
+                    	     '<input type="number" name="sr" style="width:80%"/>' +
+							 '<a class="easyui-linkbutton tf" data-options="plain:true, iconCls:\'icon-remove\'" onclick="removeTemp(this)"></a>' +
+                		'</td>' +
+            		'</tr>';
+					
+	function LoadTemp(target, para) {
+		$.each(para, function(i, data) {
+			$(target).append(template);
+			$(target+' tr:last-child').find('input').each(function(i, ele){
+				$(ele).val(data[ele.name]);
+			});
+		});
+		initReadOnly();
+		$.parser.parse(target);
+	}
+	
+	function addTemp(){
+		$('#container').append(template);
+		$.parser.parse('#container tr:last-child');
+	}
+	
+	function removeTemp(target) {
+		$(target).closest('tr').remove();
+	};
+	
+	function initReadOnly() {
+		$('#container tr').each(function(i, ele) {
+			var flag = $(ele).find('[name="sfgz"]').val();
+			alert(flag);
+			if(flag == '1') {
+				$ele.find('a.easyui-linkbutton.tf:not(.tf-view)').addClass('hide');
+				$ele.find('input').attr('readonly', 'readonly');
+			}
+			
+		});
+	}
+	
+    $(function () {
+		$$.transform('.page', 'view', {
+			
+        });
+		
+		if($('#sfkfp').val() != '1') {
+			$.find('a.easyui-linkbutton.tf:not(.tf-view)').addClass('hide');
+		}
+		
+		$$.loadForm('#ff', '/action/bm/yxlm-jthz/view', query);
+		
+		$$.request('/action/bm/parameter/list', {'tzr': '1'}, function (data) {
+			$.extend(tzr, data.tzr);
+			$$.request('/action/bm/yxlm-jtfpmx/list', query, function (data) {
+				LoadTemp('#container', data.rows);
+			});
+        });
+		
+    });
+</script>
+</body>
+
+</html>

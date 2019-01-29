@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>全民付计提明细</title>
+    <title>全民惠计提明细</title>
     <link href="../lib/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="../lib/webuploader/webuploader.css">
@@ -27,10 +27,10 @@
                     <input type="text" name="shh">
                 </td>
                 <td class="text-right col-sm-2">
-                    <label>终端号：</label>
+                    <label>活动主标题：</label>
                 </td>
                 <td class="col-sm-4">
-                    <input type="text" name="zdh">
+                    <input type="text" name="hdzbt">
                 </td>
             </tr>
             <tr>
@@ -41,18 +41,10 @@
                     <input type="text" name="shmc">
                 </td>
                 <td class="text-right col-sm-2">
-                    <label>申请月份</label></td>
+                    <label>交易日期</label></td>
                 <td class="col-sm-4">
-                    <input id="sqrq" type="text" class="easyui-validatebox Wdate" name="sqrq" style="width: 120px;" onfocus="WdatePicker({onpicked:function(){},dateFmt:'yyyyMM'})">
-                </td>
-            </tr>
-            <tr>
-               	<td class="text-right col-sm-2">
-                    <label>业务类型</label></td>
-                <td class="col-sm-4">
-                    <div class="col-sm-12" style="padding:0;">
-                        <input type="text" id="ywlx" name="ywlx" class="easyui-combobox" data-options="panelHeight:'auto'">
-                    </div>
+                    <input id="jyrq1" type="text" class="easyui-validatebox Wdate" name="jyrq" style="width: 120px;" onfocus="WdatePicker({onpicked:function(){$dp.$('#jyrq2').focus();},maxDate:'#F{$dp.$D(\'jyrq2\')}',dateFmt:'yyyyMMdd'})">
+					<input id="jyrq2" type="text" class="Wdate" name="jyrq2" style="width: 120px;" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'jyrq1\')}',dateFmt:'yyyyMMdd'})">
                 </td>
             </tr>
             <tfoot>
@@ -60,11 +52,11 @@
                 <td></td>
                 <td align="right">
                     <button type="button" class="btn btn-primary"
-                            data-options="datagrid:'#dg',url:'/action/bm/cxjc-post-report-detail/search'"
+                            data-options="datagrid:'#dg',url:'/action/bm/yxlm-jymx/search'"
                             onclick="$$.search(this)">查询
                     </button>
                     <button type="button" class="btn btn-success" onclick="$$.exportData(this)"
-                            data-options="datagrid:'#dg',url:'/action/bm/cxjc-post-report-detail/export'">
+                            data-options="datagrid:'#dg',url:'/action/bm/yxlm-jymx/export'">
                         导出
                     </button>
                 </td>
@@ -77,25 +69,36 @@
             </tfoot>
         </table>
     </form>
-    
-    <table id="dg" class="easyui-datagrid" title="终端交易汇总" data-options="singleSelect:true,pagination:true,rownumbers:true">
+    <!--div id="tb">
+        <a href="#" class="easyui-linkbutton" data-toggle="view" data-options="iconCls:'fa fa-bars',plain:true,onBefore:">查看明细</a>
+    </div-->
+    <table id="dg" class="easyui-datagrid" title="终端交易明细" data-options="singleSelect:true,pagination:true,rownumbers:true">
         <thead>
         <tr>
-            <th data-options="field:'settle_mon',width:80">统计月份</th>
-            <th data-options="field:'shh',width:150">商户号</th>
-            <th data-options="field:'zdh',width:80">终端</th>
-            <th data-options="field:'shmc',width:200">商户名称</th>
-            <th data-options="field:'dq',width:80">地区</th>
-            <th data-options="field:'tzr',width:80">拓展人</th>
-            <th data-options="field:'sqrq',width:80">申请日期</th>
-            <th data-options="field:'ywlx',width:80">业务类型</th>
-            <th data-options="field:'je',width:100">交易金额</th>
-            <th data-options="field:'bs',width:80">交易笔数</th>
-            <th data-options="field:'sxf',width:100">手续费</th>
-            <th data-options="field:'sdsy',width:100">收单收益</th>
-            <th data-options="field:'bl',width:100">计提比例</th>
-            <th data-options="field:'fp',width:100">分配比例</th>
-            <th data-options="field:'sr',width:100">个人收入</th>
+            <th data-options="field:'jyrq'">交易日期</th>
+            <th data-options="field:'jysj'">交易时间</th>
+            <th data-options="field:'shmc',width:140">商户名称</th>
+            <th data-options="field:'mdbh',width:120">门店编号</th>
+            <th data-options="field:'mdmc',width:140">门店名称</th>
+            <th data-options="field:'mdszs',width:80">门店所在省</th>
+            <th data-options="field:'mdszc',width:80">门店所在市</th>
+            <th data-options="field:'shh'">商户号</th>
+            <th data-options="field:'zdh'">终端号</th>
+            <th data-options="field:'qsshh'">清算商户号</th>
+            <th data-options="field:'lmlsh'">联盟流水号</th>
+            <th data-options="field:'kh'">卡号</th>
+            <th data-options="field:'klxmc'">卡类型名称</th>
+            <th data-options="field:'fkhmc'">发卡行名称</th>
+            <th data-options="field:'jylxdm'">交易类型代码</th>
+            <th data-options="field:'jyzt'">交易状态</th>
+            <th data-options="field:'yjyje'">原交易金额</th>
+            <th data-options="field:'sfje'">实付金额</th>
+            <th data-options="field:'dsfbtqssxf', width:80">第三方补贴清算手续费</th>
+            <th data-options="field:'sfjesxf', width:80">实付金额手续费</th>
+            <th data-options="field:'yj'">佣金</th>
+            <th data-options="field:'shysje', width:80">商户应收金额</th>
+            <th data-options="field:'hdzbt', width:140">活动主标题</th>
+            <th data-options="field:'hdyyfmc', width:140">活动运营方</th>
         </tr>
         </thead>
     </table>
@@ -123,16 +126,8 @@
         $('#dg').datagrid('reload');
     }
 	
-	var action = {'edit': [
-		'edit','update'
-	]};
-	
     $(function () {
-		$$.transform('#ff', displayType, action);
 		//$$.loadForm('#ff', '/action/bm/cxjt-post-report-detail/search', query);
-		$$.request('/action/bm/parameter/list', {'ywlx': '1'}, function (data) {
-            $('#ywlx').combobox('loadData', data.ywlx);
-        });
 		$('#ff').find('button.btn-primary').click();
     });
 </script>

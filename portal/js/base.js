@@ -625,7 +625,9 @@ window.$$ = (function () {
         formatDate: formatDate,
         syncInput: syncInput,
 		serializeUrl: serializeUrl,
-		open: open
+		open: open,
+		openIframe: openIframe,
+		parseOptions: parseOptions
     };
 
     return $$;
