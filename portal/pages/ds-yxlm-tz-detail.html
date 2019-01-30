@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>全民惠台账</title>
+    <title>全民惠台账明细</title>
     <link href="../lib/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -78,12 +78,12 @@
             </tr>
             <tr class="tf tf-create tf-update">
 				<td class="text-right col-sm-2">
-						<label>活动备注：</label>
-					</td>
-					<td class="col-sm-4">
-						<input type="text" name="hdbz">
-					</td>
+					<label>活动备注：</label>
 				</td>
+				<td class="col-sm-4">
+					<input type="text" name="hdbz">
+				</td>
+				
        			<td>
        			</td>
        		</tr>
@@ -411,7 +411,7 @@
 								data-options="url:'/action/bm/yxlm-tz/update'">
 							编辑提交
 						</button>
-						<button type="button" class="btn btn-default btn-outline" onclick="$$.close()">关闭</button>
+						<button type="button" class="btn btn-default btn-outline" onclick="window.top.closeTab();">关闭</button>
 					</td>
 				</tr>
 			</tfoot>
