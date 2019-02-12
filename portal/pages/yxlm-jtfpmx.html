@@ -42,16 +42,16 @@
             </tr>
             <tr class="tf">
                 <td class="text-right col-sm-2">
-                    <label>总收入：</label>
+                    <label>税后收入：</label>
                 </td>
                 <td class="col-sm-4">
-                    <input type="text" name="zsr" class="easyui-validatebox"/>
+                    <input type="text" id="sr" class="easyui-validatebox"/>
                 </td>
                 <td class="text-right col-sm-2">
-                    <label>已分配收入：</label>
+                    <label>计提比例：</label>
                 </td>
                 <td class="col-sm-4">
-                    <input type="text" name="yfpsr" class="easyui-validatebox"/>
+                    <input type="text" name="bl" class="easyui-validatebox"/>
                 </td>
             </tr>
         </table>
@@ -188,7 +188,12 @@
 	}
 	
 	function LoadForm(data) {
-		$('#kfpsr').text(data.data.kfpsr);
+		var km = query.km;
+		var sr = data.data[km];
+		$('#sr').val(sr);
+		var kfpsr = (sr*data.data.bl)-data.data.yfpsr;
+		$('#kfpsr').text(kfpsr.toFixed(2));
+		
 		$$.request('/action/bm/parameter/list', {'tzr': '1'}, function (data) {
 			$.extend(tzr, data.tzr);
 			$$.request('/action/bm/yxlm-jtfpmx/list', query, function (data) {

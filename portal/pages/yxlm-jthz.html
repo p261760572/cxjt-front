@@ -76,9 +76,11 @@
 				<th data-options="field:'dq'">地市</th>
 				<th data-options="field:'sfje'">实付金额</th>
 				<th data-options="field:'hdjybs'">活动交易笔数</th>
-				<th data-options="field:'shyjsy',formatter:formatjtfp">商户佣金收益</th>
-				<th data-options="field:'hbqsksdsy',formatter:formatjtfp">合并清算款收单收益</th>
-				<th data-options="field:'sfsy',formatter:formatjtfp">收费收益</th>
+				<th data-options="field:'shyjsy'">商户佣金收益</th>
+				<th data-options="field:'hbqsksdsy'">合并清算款收单收益</th>
+				<th data-options="field:'sfsr'">收费收益</th>
+				<th data-options="field:'fwf'">服务费</th>
+				<th data-options="field:'dsjs',formatter:formatjtfp">地市计算</th>
 				<th data-options="field:'zsr'">总收入</th>
 				<!--th data-options="field:'sfkfp_nm',formatter:formatjtfp">分配状态</th-->
 				<th data-options="field:'sfgz_nm'">计提状态</th>
@@ -119,14 +121,11 @@
 	}
 	
 	function formatjtfp(value, row, index) {
-		var url = 'yxlm-jtfpmx.html?rec_id='+row.rec_id;
-		/*
-		if(row.sfkfp == '1') {
-			return '<a href="javascript:void(0)" onclick="$$.open(\'yxlm-jtfpmx.html?rec_id='+row.rec_id+'\',\'全民惠分配明细\')">'+value+'</a>';
+		if(row.sfkfp == '1' && value > 0) {
+			return '<a href="javascript:void(0)" onclick="$$.open(\'yxlm-jtfpmx.html?km=sfsr&rec_id='+row.rec_id+'\',\'全民惠分配明细\')">'+value+'</a>';
 		} else{
 			return value;
-		}*/
-		return '<a href="javascript:void(0)" onclick="$$.open(\'yxlm-jtfpmx.html?rec_id='+row.rec_id+'\',\'全民惠分配明细\')">'+value+'</a>';
+		}
 	}
 
 	function create_bill(target) {
