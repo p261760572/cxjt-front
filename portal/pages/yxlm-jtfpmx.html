@@ -138,14 +138,14 @@
 						     '<label>客户经理</label></td>' +
 						'<td class="col-sm-2">' +
 							 '<div class="col-sm-12" style="padding:0;">' +
-							     '<input type="text" name="tzr" class="easyui-combobox" data-options="valueField:\'value\',textField:\'text\',data:tzr">' +
+							     '<input type="text" name="tzr" class="easyui-combobox" data-options="valueField:\'value\',textField:\'text\',data:tzr" required>' +
 							 '</div>' +
 						'</td>' +
                 		'<td class="text-right col-sm-2">' +
                     	     '<label>分配收入</label>' +
                 	    '</td>' +
                 		'<td class="col-sm-2">' +
-                    	     '<input type="number" name="sr"/>' +
+                    	     '<input type="number" name="sr" class="easyui-validatebox" required/>' +
                 		'</td>' +
 						'<td class="text-right col-sm-2">' +
                     	     '<label>分配时间</label>' +
@@ -164,7 +164,7 @@
 			});
 		});
 		initReadOnly();
-		$.parser.parse(target);
+		$.parser.parse('#container');
 	}
 	
 	function addTemp(){
@@ -176,14 +176,18 @@
 		$(target).closest('tr').remove();
 	};
 	
+	function BeforeCommit(data) {
+		
+	}
+	
 	function initReadOnly() {
 		$('#container tr').each(function(i, ele) {
-			var flag = $(ele).find('input[name="sfgz"]').val();
-			if(flag == '1') {
+			//var flag = $(ele).find('input[name="sfgz"]').val();
+			//if(flag == '1') 
+			{
 				$(ele).find('a.easyui-linkbutton.tf:not(.tf-view)').addClass('hide');
 				$(ele).find('input').attr('readonly', 'readonly');
 			}
-			
 		});
 	}
 	
