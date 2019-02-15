@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>全民惠佣金分配</title>
+    <link href="../lib/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="../lib/webuploader/webuploader.css">
+    <link href="../lib/layer/theme/default/layer.css" rel="stylesheet">
+    <link href="../lib/viewer/viewer.min.css" rel="stylesheet">
+    <link href="../lib/jquery-easyui/themes/bootstrap/easyui.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="page">
+    <form id="ff" data-options="onSerialize: onSerialForm">
+        <table class="table" style="width: 970px;">
+            <!--caption>查询执行记录</caption-->
+            <tr>
+                <td class="text-right col-sm-2">
+                    <label>商户号：</label>
+                </td>
+                <td class="col-sm-4">
+                    <input type="text" name="shh">
+                </td>
+               	<td class="text-right col-sm-2">
+                    <label>商户名称：</label>
+                </td>
+                <td class="col-sm-4">
+                    <input type="text" name="shmc">
+                </td>
+            </tr>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td align="right">
+                    <button type="button" class="btn btn-primary"
+                            data-options="datagrid:'#dg',url:'/action/bm/yxlm-yjfp/search'"
+                            onclick="$$.search(this)">查询
+                    </button>
+                    <!--button type="button" class="btn btn-success" onclick="$$.exportData(this)"
+                            data-options="datagrid:'#dg',url:'/action/bm/yxlm-jymx/export'">
+                        导出
+                    </button-->
+                </td>
+                <td align="left">
+                    <button type="button" class="btn btn-default btn-outline" onclick="$$.reset(this)">重置</button>
+                    <button type="button" class="btn btn-default btn-outline" onclick="window.top.closeTab();">关闭</button>
+                </td>
+                <td></td>
+            </tr>
+            </tfoot>
+        </table>
+    </form>
+    <div id="tb">
+       	<a href="#" class="easyui-linkbutton" onclick="onClickOpenDlg(this, 'single')" data-options="iconCls:'fa fa-bars',plain:true">分配</a>
+        <a href="#" class="easyui-linkbutton" onclick="onClickOpenDlg(this, 'batch')" data-options="iconCls:'fa fa-bars',plain:true">批量分配</a>
+    </div>
+    <table id="dg" class="easyui-datagrid" title="终端交易明细" data-options="singleSelect:true,pagination:true,rownumbers:true,toolbar:'#tb'">
+        <thead>
+        <tr>
+            <th data-options="field:'chk',checkbox:true"></th>
+            <th data-options="field:'settle_mon'">交易月份</th>
+            <th data-options="field:'shh'">商户号</th>
+            <th data-options="field:'zdh'">终端号</th>
+            <th data-options="field:'mdmc',width:140">门店名称</th>
+            <th data-options="field:'mdszc',width:80">门店所在市</th>
+            <th data-options="field:'yjyje'">原交易金额</th>
+            <th data-options="field:'sfje'">实付金额</th>
+            <th data-options="field:'sfjesxf', width:80">实付金额手续费</th>
+            <th data-options="field:'yj'">佣金</th>
+            <th data-options="field:'yjbl'">分配比例</th>
+            <th data-options="field:'yjkfpsr'">可分配收入</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+    
+<div id="dd" class="easyui-dialog dlg" title="分配" style="width:560px;height:200px;" data-options="resizable:true,modal:true,closed:true">
+    <form id="ff2" data-options="onSerialize:$.noop">
+        <table class="table" style="width: 500px;">
+            <tbody>
+				<tr class="tf tf-create tf-update">
+					<td class="text-right col-sm-2">
+						<label>客户经理</label></td>
+					<td class="col-sm-4">
+						<div class="col-sm-12" style="padding:0;">
+							<input type="text" id="tzr" name="tzr" class="easyui-combobox" required>
+						</div>
+					</td>
+					<td>
+						<button type="button" class="btn btn-danger" onclick="$$.submit(this)"
+                            data-options="datagrid:'#dg',url:'/action/bm/yxlm-jtfpmx-yj/commit',onSuccess:onSubmit,onBefore:BeforeCommit">
+                            提交
+                    	</button>
+					</td>
+				</tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<script src="../lib/jquery/jquery.min.js"></script>
+<script src="../lib/layer/layer.js"></script>
+<script src="../lib/viewer/viewer.min.js"></script>
+<script src="../lib/My97DatePicker/WdatePicker.js"></script>
+<script src="../lib/jquery-easyui/jquery.easyui.min.js"></script>
+<script src="../lib/webuploader/webuploader.min.js"></script>
+<script src="../js/base.js"></script>
+<script src="../js/st.js"></script>
+<script>
+    var query = $$.parseQueryString();
+    var displayType = query.displayType;
+    var operateType = query.operateType;
+
+	function onSerialForm(data) {
+		$.extend(data, query);
+	}
+	
+    function reload() {
+        $('#dg').datagrid('reload');
+    }
+	
+	function open(url) {
+		if (window.top.addTab) {
+			url = 'pages/' + url;
+			window.top.addTab('全民惠台账明细', url, true);
+		}
+	}
+	
+	function onSubmit() {
+		$$.msg('操作成功');
+		$('#dd').dialog('close');
+		reload();
+	}
+	
+	var jtfpmx = [];
+	function onClickOpenDlg(target, type){
+		jtfpmx = [];
+		if(type == 'single') {
+			var row = $('#dg').datagrid('getSelected');
+			if (row === null) {
+				$$.msg('请选择记录！');
+				return false;
+			}
+			jtfpmx.push(row);
+		} else if(type == 'batch') {
+			var rows = $('#dg').datagrid('getChecked');
+			if (!rows.length) {
+				$$.msg('请勾选记录！');
+            	return false;
+			}
+			jtfpmx = rows.concat();
+		}
+		
+		$('#dd').dialog('open');
+	}
+	
+	function BeforeCommit(data) {
+		$.extend(data, {jtfpmx: jtfpmx, rec_id: query.rec_id});
+		return true;
+	}
+	
+    $(function () {
+		//$$.loadForm('#ff', '/action/bm/cxjt-post-report-detail/search', query);
+		//$('#tb a.easyui-linkbutton[data-toggle]').on('click', function (event) {
+        //    event.preventDefault();
+        //    $$.clickToolbar(this, toggleOptions);
+        //});
+		
+		$('#ff').find('button.btn-primary').click();
+		$$.request('/action/bm/parameter/list', {'tzr': '1'}, function (data) {
+            $('#tzr').combobox('loadData', data.tzr);
+        });
+    });
+</script>
+</body>
+
+</html>

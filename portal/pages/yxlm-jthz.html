@@ -63,11 +63,9 @@
             </tfoot>
         </table>
     </form>
-    <div id="tb">
-        <!--a href="#" class="easyui-linkbutton" data-toggle="create" data-options="iconCls:'fa fa-bars',plain:true">新增</a>
-        <a href="#" class="easyui-linkbutton" data-toggle="update" data-options="iconCls:'fa fa-bars',plain:true">修改</a-->
+    <!--div id="tb">
         <a href="#" class="easyui-linkbutton" data-toggle="view" data-options="iconCls:'fa fa-bars',plain:true,onBefore:onbefore">查看详情</a>
-    </div>
+    </div-->
     <table id="dg" class="easyui-datagrid" title="查询结果"
            data-options="singleSelect:true,pagination:true,rownumbers:true,idField:'rec_id',toolbar:'#tb'">
         <thead>
@@ -76,7 +74,7 @@
 				<th data-options="field:'dq'">地市</th>
 				<th data-options="field:'sfje'">实付金额</th>
 				<th data-options="field:'hdjybs'">活动交易笔数</th>
-				<th data-options="field:'shyjsy'">商户佣金收益</th>
+				<th data-options="field:'shyjsy',formatter:formatyjfp">商户佣金收益</th>
 				<th data-options="field:'hbqsksdsy'">合并清算款收单收益</th>
 				<th data-options="field:'sfsr'">收费收益</th>
 				<th data-options="field:'fwf'">服务费</th>
@@ -118,6 +116,14 @@
 		params['settle_mon'] = row.settle_mon;
 		params['dq'] = row.dq;
 		return true;
+	}
+	
+	function formatyjfp(value, row, index) {
+		if(row.yjkfp == '1' && value > 0) {
+			return '<a href="javascript:void(0)" onclick="$$.open(\'yxlm-yjfp.html?km=yj&rec_id='+row.rec_id+'&settle_mon='+row.settle_mon+'&dq='+row.dq+'\',\'全民惠佣金分配\')">'+value+'</a>';
+		} else{
+			return value;
+		}
 	}
 	
 	function formatjtfp(value, row, index) {
