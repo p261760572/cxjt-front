@@ -153,7 +153,7 @@
 	
 	function formatjtfp(value, row, index) {
 		if(row.sfkfp == '1' && value > 0) {
-			return '<a href="javascript:void(0)" onclick="$$.open(\'yxlm-jtfpmx.html?km=sfsr&rec_id='+row.rec_id+'\',\'全民惠分配明细\')">'+value+'</a>';
+			return '<a href="javascript:void(0)" onclick="$$.open(\'yxlm-sffp.html?km=sfsr&rec_id='+row.rec_id+'\',\'全民惠分配明细\')">'+value+'</a>';
 		} else{
 			return value;
 		}

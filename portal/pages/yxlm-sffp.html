@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>全民惠收费分配</title>
+    <link href="../lib/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="../lib/webuploader/webuploader.css">
+    <link href="../lib/layer/theme/default/layer.css" rel="stylesheet">
+    <link href="../lib/viewer/viewer.min.css" rel="stylesheet">
+    <link href="../lib/jquery-easyui/themes/bootstrap/easyui.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="page">
+    <form id="ff" data-options="onSerialize: onSerialForm">
+        <table class="table" style="width: 970px;">
+            <!--caption>查询执行记录</caption-->
+            <tr>
+                <td class="text-right col-sm-2">
+                    <label>商户号：</label>
+                </td>
+                <td class="col-sm-4">
+                    <input type="text" name="shh">
+                </td>
+               	<td class="text-right col-sm-2">
+                    <label>商户名称：</label>
+                </td>
+                <td class="col-sm-4">
+                    <input type="text" name="shmc">
+                </td>
+            </tr>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td align="right">
+                    <button type="button" class="btn btn-primary"
+                            data-options="datagrid:'#dg',url:'/action/bm/yxlm-sffp/search'"
+                            onclick="$$.search(this)">查询
+                    </button>
+                    <!--button type="button" class="btn btn-success" onclick="$$.exportData(this)"
+                            data-options="datagrid:'#dg',url:'/action/bm/yxlm-jymx/export'">
+                        导出
+                    </button-->
+                </td>
+                <td align="left">
+                    <button type="button" class="btn btn-default btn-outline" onclick="$$.reset(this)">重置</button>
+                    <button type="button" class="btn btn-default btn-outline" onclick="window.top.closeTab();">关闭</button>
+                </td>
+                <td></td>
+            </tr>
+            </tfoot>
+        </table>
+    </form>
+    <div id="tb">
+       	<a href="#" class="easyui-linkbutton" data-toggle="view" data-options="iconCls:'fa fa-bars',plain:true,onBefore:onbefore">分配</a>
+    </div>
+    <table id="dg" class="easyui-datagrid" title="活动台账明细" data-options="singleSelect:true,pagination:true,rownumbers:true,toolbar:'#tb',idField:'rec_id'">
+        <thead>
+        <tr>
+            <!--th data-options="field:'chk',checkbox:true"></th-->
+            <th data-options="field:'tjrq'">登记日期</th>
+            <th data-options="field:'dq_nm'">地区</th>
+            <th data-options="field:'yxlm_hzf'">活动方</th>
+            <th data-options="field:'hdmc',width:140">活动名称</th>
+            <th data-options="field:'zjcbm'">资金池编码</th>
+            <th data-options="field:'sr'">收入</th>
+            <th data-options="field:'fwf'">服务费</th>
+            <th data-options="field:'bl'">比例</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+    
+<script src="../lib/jquery/jquery.min.js"></script>
+<script src="../lib/layer/layer.js"></script>
+<script src="../lib/viewer/viewer.min.js"></script>
+<script src="../lib/My97DatePicker/WdatePicker.js"></script>
+<script src="../lib/jquery-easyui/jquery.easyui.min.js"></script>
+<script src="../lib/webuploader/webuploader.min.js"></script>
+<script src="../js/base.js"></script>
+<script src="../js/st.js"></script>
+<script>
+    var query = $$.parseQueryString();
+    var displayType = query.displayType;
+    var operateType = query.operateType;
+
+	function onSerialForm(data) {
+		$.extend(data, query);
+	}
+	
+    function reload() {
+        $('#dg').datagrid('reload');
+    }
+	
+	function open(url) {
+		if (window.top.addTab) {
+			url = 'pages/' + url;
+			window.top.addTab('全民惠台账明细', url, true);
+		}
+	}
+	
+	function onbefore(row, params) {
+		$.extend(params, query, {bz: row.rec_id});
+		return true;
+	}
+	
+	var toggleOptions = {
+        options: {
+			view: {
+				url: 'yxlm-jtfpmx.html'
+			}
+        },
+        params: {
+			view: {
+				
+			}
+		}
+    };
+	
+    $(function () {
+		//$$.loadForm('#ff', '/action/bm/cxjt-post-report-detail/search', query);
+		$('#tb a.easyui-linkbutton[data-toggle]').on('click', function (event) {
+            event.preventDefault();
+            $$.clickToolbar(this, toggleOptions);
+        });
+		
+		$('#ff').find('button.btn-primary').click();
+		$$.request('/action/bm/parameter/list', {'tzr': '1'}, function (data) {
+            $('#tzr').combobox('loadData', data.tzr);
+        });
+    });
+</script>
+</body>
+
+</html>

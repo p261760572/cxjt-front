@@ -22,8 +22,8 @@
             <caption>计提详情</caption>
             <tr>
             	<td>
-					<input type="text" class="hidden" name="rec_id">
-					<input type="text" class="hidden" name="sfkfp" id="sfkfp">
+					<!--input type="text" class="hidden" name="rec_id"-->
+					<input type="text" class="hidden" name="fpzt" id="fpzt">
 				</td>
 			</tr>
             <tr class="tf">
@@ -77,7 +77,7 @@
 								data-options="url:'/action/bm/yxlm-jtfpmx-sf/commit'">
 							提交
 						</button>
-						<button type="button" class="btn btn-default btn-outline" onclick="window.top.closeTab();">关闭</button>
+						<button type="button" class="btn btn-default btn-outline" onclick="$$.close()">关闭</button>
 					</td>
 				</tr>
 			</tfoot>
@@ -116,19 +116,6 @@
 		});
 		
 		data.jtfpmx = jtfpmx;
-	}
-	
-	function onClickrow(index, row) {
-		$('#dg2').datagrid({
-            url: $$.wrapUrl('/action/bm/lc-exec-module-detail/search'),
-            pageNumber: 1,
-            queryParams: query,
-            onLoadSuccess: function (data) {
-                $(this).datagrid('clearChecked');
-                //解决滚动条引起的panel宽度问题
-                $(this).datagrid('getPanel').panel('resize');
-            }
-        });
 	}
 	
 	var template = '<tr class="tf tf-create tf-update">' +
@@ -202,7 +189,7 @@
 			$.extend(tzr, data.tzr);
 			$$.request('/action/bm/yxlm-jtfpmx/list', query, function (data) {
 				LoadTemp('#container', data.rows);
-				if($('#sfkfp').val() != '1') {
+				if($('#fpzt').val() != '1') {
 					$('#add-btn').addClass('hide');
 				}
 			});
@@ -214,7 +201,7 @@
 			
         });
 		
-		$$.loadForm('#ff', '/action/bm/yxlm-jthz/view', query);
+		$$.loadForm('#ff', '/action/bm/yxlm-sffp/view', query);
     });
 </script>
 </body>
