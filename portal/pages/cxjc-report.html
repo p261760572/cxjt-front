@@ -28,7 +28,6 @@
                 <td class="col-sm-4">
                     <input id="settle_date" type="text" class="easyui-validatebox Wdate" data-options="required:true" name="settle_mon" style="width: 120px;" onfocus="WdatePicker({onpicked:function(){},dateFmt:'yyyyMM'})">
                 </td>
-                <td></td>
                 <!--td class="text-right col-sm-2">
                     <label>业务类型</label></td>
                 <td class="col-sm-4">
@@ -36,6 +35,12 @@
                         <input type="text" id="ywlx" name="ywlx" class="easyui-combobox" data-options="panelHeight:'auto'">
                     </div>
                 </td-->
+                <td class="text-right col-sm-2">
+                	<label>统计方式</label></td>
+                <td class="col-sm-4">
+                	<input type="radio" name="type" value="sdsy" style="width:20%;" checked/>按收单收益
+                	<input type="radio" name="type" value="sr" style="width:20%;"/>按计提收入
+                </td>
             </tr>
 
             </tbody>
