@@ -116,6 +116,12 @@
 		});
 		
 		data.jtfpmx = jtfpmx;
+		$.extend(data, query);
+		delete data['sfgz'];
+		delete data['created_time'];
+		delete data['sr'];
+		delete data['record_id'];
+		delete data['tzr'];
 	}
 	
 	var template = '<tr class="tf tf-create tf-update">' +
@@ -189,7 +195,7 @@
 			$.extend(tzr, data.tzr);
 			$$.request('/action/bm/yxlm-jtfpmx/list', query, function (data) {
 				LoadTemp('#container', data.rows);
-				if($('#fpzt').val() != '1') {
+				if($('#fpzt').val() != '0') {
 					$('#add-btn').addClass('hide');
 				}
 			});
