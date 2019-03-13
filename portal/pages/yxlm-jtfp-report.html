@@ -21,11 +21,18 @@
             <caption>查询全民惠计提</caption>
             <tbody>
             <tr>
-                <td class="text-right col-sm-2">
-                    <label>计提月份</label></td>
+               	<td class="text-right col-sm-2">
+                    <label>分配月份</label></td>
                 <td class="col-sm-4">
-                    <input id="settle_date" type="text" class="easyui-validatebox Wdate" name="settle_mon" style="width: 120px;" onfocus="WdatePicker({onpicked:function(){},dateFmt:'yyyyMM'})">
+                    <input id="jt_mon" type="text" class="easyui-validatebox Wdate" name="jt_mon" style="width: 120px;" onfocus="WdatePicker({onpicked:function(){},dateFmt:'yyyyMM'})">
                 </td>
+                <td class="text-right col-sm-2">
+                    <label>统计月份</label></td>
+                <td class="col-sm-4">
+                    <input id="settle_mon" type="text" class="easyui-validatebox Wdate" name="settle_mon" style="width: 120px;" onfocus="WdatePicker({onpicked:function(){},dateFmt:'yyyyMM'})">
+                </td>
+            </tr>
+            <tr>
                 <td class="text-right col-sm-2">
                     <label>地级市</label></td>
                 <td class="col-sm-4">
@@ -33,8 +40,6 @@
                         <input type="text" id="dq" name="dq" class="easyui-combobox">
                     </div>
                 </td>
-            </tr>
-            <tr>
                 <td class="text-right col-sm-2">
                     <label>拓展人</label></td>
                 <td class="col-sm-4">
