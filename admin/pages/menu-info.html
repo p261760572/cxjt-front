@@ -319,10 +319,10 @@
 
             });
             data.flag = '1';
+			data.rows = 1000;
             $('#selected-fun-set-dg').datagrid({
                 url: $$.wrapUrl('/action/admin/menu-info/exist-fun-set'),
-                queryParams: data,
-                pageSize: 1000
+                queryParams: data
             });
         } else {
             return false;
